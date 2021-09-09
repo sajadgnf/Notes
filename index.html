@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <title>Notes</title>
+</head>
+
+<body class="d-flex align-items-center flex-column">
+    <section>
+        <!-- Add Notes -->
+        <h1 class="title my-5">Notes</h1>
+        <input id="note_text" type="text" placeholder="Write Down Your Note">
+        <p class="text-start text-danger" id="error"></p>
+
+        <!-- palet -->
+        <div class="note_palet text-start">
+            <span class="note_color" style="background-color: #fff;"></span>
+            <span class="note_color" style="background-color: #fef1e4;"></span>
+            <span class="note_color" style="background-color: #d1ff02;"></span>
+            <span class="note_color" style="background-color: #00ffff;"></span>
+            <span class="note_color" style="background-color: #4fcb8d;"></span>
+            <span class="note_color" style="background-color: #985ce8;"></span>
+            <span class="note_color" style="background-color: #889611;"></span>
+            <span class="note_color" style="background-color: #ffcf4b;"></span>
+            <span class="note_color" style="background-color: #fc6e20;"></span>
+            <span class="note_color" style="background-color: #ff0156;"></span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-end">
+            <i id="add_note" class="btns bi bi-plus btn-outline-primary"></i>
+            <i id="delete_note" class="btns bi bi-eraser-fill btn-outline-warning"></i>
+        </div>
+    </section>
+
+    <!-- Confirmed Notes -->
+    <div id="list" class="d-flex justify-content-center align-items-center flex-wrap  pt-5"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>
