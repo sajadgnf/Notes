@@ -16,37 +16,22 @@ var list = _id("list")
 var palet = $.querySelectorAll(".note_color")
 var notes = []
 
-// Create Note
-var render = () => {
-    var wrotenNote = $.createElement("p")
-    var parentDiv = $.createElement("div")
-    var deleteBtn = $.createElement("i")
-    var noteCount = 1
+// Note Color
+palet.forEach(item => {
+    item.addEventListener("click", event => {
+        var paletColor = event.target.style.backgroundColor
+        noteText.style.backgroundColor = paletColor
 
-    notes.forEach(note => {
-        wrotenNote.innerHTML = note
-        deleteBtn.classList.add("bi", "bi-x", "delete_btn")
-        wrotenNote.appendChild(deleteBtn)
-        parentDiv.classList.add("parent_div", "col-md-3", "shadow")
-        parentDiv.setAttribute("id", "note" + noteCount++)
-        parentDiv.appendChild(wrotenNote)
-        parentDiv.style.background = noteText.style.backgroundColor
-        list.appendChild(parentDiv)
     })
-
-    // Delet Notes
-    deleteBtn.addEventListener("click", () => {
-        deleteBtn.parentElement.parentElement.remove()
-        localStorage.setItem("notes", list.innerHTML)
-    })
-}
+})
 
 // Error For Empy Frame
-var errorNotif = () => {
-    if (noteText.value == "") {
+var errorNotif = noteItem => {
+    if (noteItem == "") {
         error.innerHTML = "Please Fill The Frame !"
-        list.lastElementChild.style.display = "none"
+        return false
     }
+    return true
 }
 
 // Clear Error
@@ -60,38 +45,85 @@ var clear = () => {
     noteText.style.backgroundColor = "#fff"
 }
 
+// Create Note
+var bildNote = () => {
+    list.innerHTML = ""
+    var noteCount = 1
+
+    notes.forEach(element => {
+      var note = element.note
+      var color = element.color
+        // Delete Note
+        var deleteBtn = $.createElement("i")
+        deleteBtn.classList.add("bi", "bi-x", "delete_btn")
+        deleteBtn.addEventListener("click", () => {
+            deleteIcon(note)
+        })
+
+        // Note Text
+        var wrotenNote = $.createElement("p")
+        wrotenNote.innerHTML = note
+
+        // Note Box
+        var noteBox = $.createElement("div")
+        noteBox.classList.add("parent_div", "col-md-3", "shadow")
+        noteBox.setAttribute("id", "note" + noteCount++)
+        noteBox.style.backgroundColor = color
+      
+        noteBox.append(wrotenNote, deleteBtn)
+        list.append(noteBox)
+    })
+}
+
+// Delet Notes
+var deleteIcon = inputNote => {
+    var deletNotesConfirm = confirm("Are You Sure...?")
+
+    if (deletNotesConfirm) {
+        notes.forEach((noteItem, index) => {
+            if (noteItem.note === inputNote) {
+                notes.splice(index, 1)
+            }
+        })
+    }
+    localStorage.setItem("notes", JSON.stringify(notes))
+    fetchNotes()
+}
+
 // Adding Notes
 var addNotes = () => {
-    notes.push(noteText.value)
+    if (!errorNotif(noteText.value)) {
+        return false
+    }
 
-    render()
-    errorNotif()
+    notes.push({note: noteText.value, color: noteText.style.backgroundColor})
+    localStorage.setItem("notes", JSON.stringify(notes))
+
+    bildNote()
     clear()
-
-    localStorage.setItem("notes", list.innerHTML)
 }
 
 var addByEnter = event => {
-    if(event.keyCode === 13) {
+    if (event.keyCode === 13) {
         addNotes()
     }
 }
 
-// refresh Act
-if (window.performance) {
-    list.innerHTML = localStorage.getItem("notes")
+// Fetch Notes
+var fetchNotes = () => {
+    if (localStorage.getItem("notes")) {
+        notes = JSON.parse(localStorage.getItem("notes"))
+    } else {
+        notes = []
+        localStorage.setItem("notes", JSON.stringify(notes))
+    }
+    bildNote()
 }
-
-// Change Color
-palet.forEach(item => {
-    item.addEventListener("click", event => {
-        var paletColor = event.target.style.backgroundColor
-        noteText.style.backgroundColor = paletColor
-    })
-})
 
 // Event Listener
 addNote.addEventListener("click", addNotes)
 noteText.addEventListener("keyup", addByEnter)
 noteText.addEventListener("focus", ClearError)
 deleteNoteValue.addEventListener("click", clear)
+
+fetchNotes()
